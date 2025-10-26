@@ -1,0 +1,73 @@
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4OTBkMjk2NC1lYzBiLTQ3ODctOTljMi1iOTA3YTZlYzU4NWEiLCJlbWFpbCI6ImFkbWluQG1lZGFwcG9pbnRtZW50LmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2MTM2NDI4MiwiZXhwIjoxNzYxNDUwNjgyfQ.ibrh3VyYpR9tNM-AuGNc06pWILcDV4nkGGw8N63KZgc
+
+"message": "Inscription réussie",
+    "user": {
+        "id": "e65ccfbb-883b-49a2-b4cd-bc12980f0d1e",
+        "email": "dr.dupont@hospital.com",
+        "firstName": "Jean",
+        "lastName": "Dupont",
+        "phone": "+33612345678",
+        "role": "DOCTOR",
+        "isActive": true,
+        "createdAt": "2025-10-25T11:48:44.123Z"
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJlNjVjY2ZiYi04ODNiLTQ5YTItYjRjZC1iYzEyOTgwZjBkMWUiLCJlbWFpbCI6ImRyLmR1cG9udEBob3NwaXRhbC5jb20iLCJyb2xlIjoiRE9DVE9SIiwiaWF0IjoxNzYxMzkyOTI0LCJleHAiOjE3NjE0NzkzMjR9.-Ls_J3j1D4szMiD0nF3eio0aXshdgR5UonwCIOHmBkw"
+}
+
+
+
+    "message": "Inscription réussie",
+    "user": {
+        "id": "9c5e3693-912e-4c7e-9d52-b6bfd773e5ee",
+        "email": "marie.martin@email.com",
+        "firstName": "Marie",
+        "lastName": "Martin",
+        "phone": "+33687654321",
+        "role": "PATIENT",
+        "isActive": true,
+        "createdAt": "2025-10-25T11:57:15.804Z"
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI5YzVlMzY5My05MTJlLTRjN2UtOWQ1Mi1iNmJmZDc3M2U1ZWUiLCJlbWFpbCI6Im1hcmllLm1hcnRpbkBlbWFpbC5jb20iLCJyb2xlIjoiUEFUSUVOVCIsImlhdCI6MTc2MTM5MzQzNSwiZXhwIjoxNzYxNDc5ODM1fQ.0vnRzkUWpB0k-j8zvkJok7viQ7Dtekly0oZHNpPk3wI"
+
+
+
+    
+    "message": "Rendez-vous créé",
+    "appointment": {
+        "id": "594264d3-8550-4c87-b076-567aada02088",
+        "doctorId": "e65ccfbb-883b-49a2-b4cd-bc12980f0d1e",
+        "patientId": "9c5e3693-912e-4c7e-9d52-b6bfd773e5ee",
+        "appointmentDate": "2025-01-25T10:00:00.000Z",
+        "duration": 30,
+        "reason": "Consultation cardiaque de routine - Bilan annuel",
+        "notes": null,
+        "status": "PENDING",
+        "createdAt": "2025-10-25T12:06:09.137Z",
+        "updatedAt": "2025-10-25T12:06:09.137Z",
+        "doctor": {
+            "id": "e65ccfbb-883b-49a2-b4cd-bc12980f0d1e",
+            "firstName": "Jean",
+            "lastName": "Dupont",
+            "email": "dr.dupont@hospital.com",
+            "doctorProfile": {
+                "id": "e0237bb3-2566-482b-8b36-1a2ffd7e4eb7",
+                "userId": "e65ccfbb-883b-49a2-b4cd-bc12980f0d1e",
+                "licenseNumber": "MD123456",
+                "specialty": "CARDIOLOGY",
+                "yearsExperience": 15,
+                "bio": "Cardiologue expérimenté spécialisé dans les maladies cardiovasculaires et l'hypertension",
+                "consultationFee": 100,
+                "availableFrom": "09:00",
+                "availableTo": "17:00",
+                "createdAt": "2025-10-25T11:56:22.794Z",
+                "updatedAt": "2025-10-25T11:56:22.794Z"
+            }
+        },
+        "patient": {
+            "id": "9c5e3693-912e-4c7e-9d52-b6bfd773e5ee",
+            "firstName": "Marie",
+            "lastName": "Martin",
+            "email": "marie.martin@email.com",
+            "phone": "+33687654321"
+        }
+    }

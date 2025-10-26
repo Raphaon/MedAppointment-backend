@@ -1,0 +1,120 @@
+// This is your Prisma schema file
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Énumération des rôles utilisateurs
+enum UserRole {
+  ADMIN
+  DOCTOR
+  PATIENT
+}
+
+// Énumération des statuts de rendez-vous
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+// Énumération des spécialités médicales
+enum MedicalSpecialty {
+  GENERAL_PRACTICE
+  CARDIOLOGY
+  DERMATOLOGY
+  PEDIATRICS
+  GYNECOLOGY
+  ORTHOPEDICS
+  PSYCHIATRY
+  OPHTHALMOLOGY
+  ENT
+  NEUROLOGY
+  OTHER
+}
+
+// Table des utilisateurs
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  firstName String
+  lastName  String
+  phone     String?
+  role      UserRole @default(PATIENT)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  doctorProfile  DoctorProfile?
+  patientProfile PatientProfile?
+  
+  appointmentsAsDoctor  Appointment[] @relation("DoctorAppointments")
+  appointmentsAsPatient Appointment[] @relation("PatientAppointments")
+
+  @@index([email])
+  @@index([role])
+}
+
+// Profil médecin
+model DoctorProfile {
+  id               String           @id @default(uuid())
+  userId           String           @unique
+  licenseNumber    String           @unique
+  specialty        MedicalSpecialty
+  yearsExperience  Int
+  bio              String?
+  consultationFee  Float?
+  availableFrom    String?          // Format HH:mm
+  availableTo      String?          // Format HH:mm
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([specialty])
+}
+
+// Profil patient
+model PatientProfile {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  dateOfBirth  DateTime?
+  bloodGroup   String?
+  allergies    String?
+  medicalHistory String?
+  emergencyContact String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Table des rendez-vous
+model Appointment {
+  id            String            @id @default(uuid())
+  doctorId      String
+  patientId     String
+  appointmentDate DateTime
+  duration      Int               @default(30) // durée en minutes
+  reason        String
+  notes         String?
+  status        AppointmentStatus @default(PENDING)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  doctor  User @relation("DoctorAppointments", fields: [doctorId], references: [id], onDelete: Cascade)
+  patient User @relation("PatientAppointments", fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@index([doctorId])
+  @@index([patientId])
+  @@index([appointmentDate])
+  @@index([status])
+}
