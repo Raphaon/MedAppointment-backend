@@ -71,7 +71,7 @@ export const patientController = {
     }
   },
 
-  async getAllPatients(req: AuthRequest, res: Response, next: NextFunction) {
+  async getAllPatients(_req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const patients = await patientService.getAllPatients();
       res.status(200).json({ patients, count: patients.length });

@@ -1,5 +1,10 @@
 import { z } from 'zod';
-import { UserRole, MedicalSpecialty, AppointmentStatus } from '@prisma/client';
+import {
+  UserRole,
+  MedicalSpecialty,
+  AppointmentStatus,
+  NotificationType,
+} from '@prisma/client';
 
 // Validation pour l'inscription
 export const registerSchema = z.object({
@@ -62,4 +67,44 @@ export const updateAppointmentSchema = z.object({
   reason: z.string().min(5).optional(),
   notes: z.string().optional(),
   status: z.nativeEnum(AppointmentStatus).optional(),
+});
+
+// Notifications
+export const notificationCreateSchema = z.object({
+  userId: z.string().uuid('ID utilisateur invalide'),
+  title: z.string().min(2, 'Le titre doit contenir au moins 2 caractères'),
+  message: z.string().min(2, 'Le message doit contenir au moins 2 caractères'),
+  type: z.nativeEnum(NotificationType).default(NotificationType.INFO),
+  link: z.string().url('Lien invalide').optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
+  expiresAt: z.string().datetime().optional(),
+});
+
+export const notificationUpdateSchema = z.object({
+  title: z.string().min(2).optional(),
+  message: z.string().min(2).optional(),
+  type: z.nativeEnum(NotificationType).optional(),
+  link: z.string().url().optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
+  isRead: z.boolean().optional(),
+});
+
+// Dossier médical
+export const medicalRecordCreateSchema = z.object({
+  patientId: z.string().uuid('ID patient invalide'),
+  doctorId: z.string().uuid('ID médecin invalide').optional(),
+  title: z.string().min(3, 'Le titre doit contenir au moins 3 caractères'),
+  diagnosis: z.string().optional(),
+  treatment: z.string().optional(),
+  notes: z.string().optional(),
+  followUpDate: z.union([z.string().datetime(), z.null()]).optional(),
+});
+
+export const medicalRecordUpdateSchema = z.object({
+  doctorId: z.string().uuid('ID médecin invalide').optional(),
+  title: z.string().min(3).optional(),
+  diagnosis: z.string().optional(),
+  treatment: z.string().optional(),
+  notes: z.string().optional(),
+  followUpDate: z.union([z.string().datetime(), z.null()]).optional(),
 });

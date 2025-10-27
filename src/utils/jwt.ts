@@ -1,11 +1,13 @@
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions, Secret } from 'jsonwebtoken';
 import { AuthPayload } from '../types/express';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_key';
-const ACCESS_TOKEN_EXPIRES = process.env.ACCESS_TOKEN_EXPIRES || '24h';
+const JWT_SECRET: Secret = process.env.JWT_SECRET || 'fallback_secret_key';
+const ACCESS_TOKEN_EXPIRES: SignOptions['expiresIn'] =
+  (process.env.ACCESS_TOKEN_EXPIRES as SignOptions['expiresIn']) || '24h';
 
 export const generateAccessToken = (payload: AuthPayload): string => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRES });
+  const options: SignOptions = { expiresIn: ACCESS_TOKEN_EXPIRES };
+  return jwt.sign(payload, JWT_SECRET, options);
 };
 
 export const verifyToken = (token: string): AuthPayload => {

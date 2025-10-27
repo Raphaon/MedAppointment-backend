@@ -7,6 +7,17 @@ export interface AuthPayload {
   role: UserRole;
 }
 
+export interface UploadedFile {
+  fieldname: string;
+  originalname: string;
+  mimetype: string;
+  size: number;
+  filename: string;
+  path: string;
+}
+
 export interface AuthRequest extends Request {
   user?: AuthPayload;
+  file?: UploadedFile;
+  files?: UploadedFile[];
 }
