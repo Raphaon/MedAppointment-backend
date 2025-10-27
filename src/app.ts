@@ -9,9 +9,12 @@ import userRoutes from './routes/user.routes';
 import doctorRoutes from './routes/doctor.routes';
 import patientRoutes from './routes/patient.routes';
 import appointmentRoutes from './routes/appointment.routes';
+import notificationRoutes from './routes/notification.routes';
+import medicalRecordRoutes from './routes/medical-record.routes';
 
 // Middlewares
 import { errorHandler } from './middlewares/error.middleware';
+import { UPLOAD_ROOT } from './config/storage';
 
 const app: Application = express();
 
@@ -34,9 +37,10 @@ app.use('/api/', limiter);
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use('/uploads', express.static(UPLOAD_ROOT));
 
 // Routes
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.json({
     message: 'Bienvenue sur l\'API MedAppointment',
     version: '1.0.0',
@@ -46,11 +50,13 @@ app.get('/', (req, res) => {
       doctors: '/api/doctors',
       patients: '/api/patients',
       appointments: '/api/appointments',
+      medicalRecords: '/api/medical-records',
+      notifications: '/api/notifications',
     },
   });
 });
 
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
@@ -59,9 +65,11 @@ app.use('/api/users', userRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/patients', patientRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/medical-records', medicalRecordRoutes);
 
 // 404 handler
-app.use((req, res) => {
+app.use((_req, res) => {
   res.status(404).json({ error: 'Route introuvable' });
 });
 
