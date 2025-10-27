@@ -15,6 +15,15 @@ enum UserRole {
   PATIENT
 }
 
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ERROR
+  REMINDER
+  SYSTEM
+}
+
 // Énumération des statuts de rendez-vous
 enum AppointmentStatus {
   PENDING
@@ -55,9 +64,14 @@ model User {
   // Relations
   doctorProfile  DoctorProfile?
   patientProfile PatientProfile?
-  
+
   appointmentsAsDoctor  Appointment[] @relation("DoctorAppointments")
   appointmentsAsPatient Appointment[] @relation("PatientAppointments")
+
+  notifications           Notification[]
+  medicalRecordsAsPatient MedicalRecord[] @relation("PatientMedicalRecords")
+  medicalRecordsAsDoctor  MedicalRecord[] @relation("DoctorMedicalRecords")
+  uploadedDocuments       MedicalDocument[] @relation("UploaderDocuments")
 
   @@index([email])
   @@index([role])
@@ -117,4 +131,65 @@ model Appointment {
   @@index([patientId])
   @@index([appointmentDate])
   @@index([status])
+}
+
+model MedicalRecord {
+  id           String   @id @default(uuid())
+  patientId    String
+  doctorId     String?
+  title        String
+  diagnosis    String?
+  treatment    String?
+  notes        String?
+  followUpDate DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  patient User  @relation("PatientMedicalRecords", fields: [patientId], references: [id], onDelete: Cascade)
+  doctor  User? @relation("DoctorMedicalRecords", fields: [doctorId], references: [id], onDelete: SetNull)
+
+  documents MedicalDocument[]
+
+  @@index([patientId])
+  @@index([doctorId])
+  @@index([createdAt])
+}
+
+model MedicalDocument {
+  id        String   @id @default(uuid())
+  recordId  String
+  fileName  String
+  filePath  String
+  mimeType  String
+  fileSize  Int
+  uploadedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  uploaderId String?
+
+  record   MedicalRecord @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  uploader User?         @relation("UploaderDocuments", fields: [uploaderId], references: [id], onDelete: SetNull)
+
+  @@index([recordId])
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  type      NotificationType @default(INFO)
+  link      String?
+  metadata  Json?
+  isRead    Boolean          @default(false)
+  readAt    DateTime?
+  expiresAt DateTime?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, isRead])
+  @@index([createdAt])
+  @@index([expiresAt])
 }

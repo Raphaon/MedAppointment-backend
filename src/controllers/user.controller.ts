@@ -55,7 +55,7 @@ export const userController = {
     }
   },
 
-  async getDoctors(req: AuthRequest, res: Response, next: NextFunction) {
+  async getDoctors(_req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const doctors = await userService.getDoctors();
       res.status(200).json({ doctors, count: doctors.length });
@@ -64,7 +64,7 @@ export const userController = {
     }
   },
 
-  async getPatients(req: AuthRequest, res: Response, next: NextFunction) {
+  async getPatients(_req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const patients = await userService.getPatients();
       res.status(200).json({ patients, count: patients.length });
